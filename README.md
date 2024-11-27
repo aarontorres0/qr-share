@@ -4,6 +4,15 @@
 
 [qr-share](https://aarontorres0.github.io/qr-share/) allows users to to generate and scan QR codes for seamless text transfer between devices.
 
+<div align="center">
+  <img
+    src="imgs/qr-share.png"
+    alt="QR Share website"
+    width="700"
+    style="box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); border-radius: 8px;"
+  >
+</div>
+
 ## Getting Started
 
 Follow these steps to get a development environment up and running:
