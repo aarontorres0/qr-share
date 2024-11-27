@@ -10,7 +10,7 @@ const App = () => {
   return (
     <div
       className={`flex flex-col items-center justify-center min-h-screen ${
-        darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-800"
+        darkMode ? "bg-gray-800" : "bg-gray-100"
       } space-y-6 px-4 py-8`}
     >
       <div className="absolute top-4 right-4">
