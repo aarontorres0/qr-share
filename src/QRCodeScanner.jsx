@@ -47,39 +47,34 @@ const QRCodeScanner = () => {
   }, []);
 
   return (
-    <div className="card bg-white shadow-xl p-6 w-full max-w-md rounded-lg">
-      <h2 className="text-xl font-bold text-yellow-600 mb-4 text-center">
-        QR Code Scanner
-      </h2>
-      <video ref={videoRef} className="w-full rounded-lg mb-4" />
-      <p className="text-sm text-yellow-500 italic mb-4">
-        Note: Ensure camera permissions are enabled in your browser for scanning.
-      </p>
+<div className="card shadow-xl w-full max-w-md">
+  <div className="card-body">
+    <h2 className="card-title text-yellow-600">QR Code Scanner</h2>
+    <video ref={videoRef} className="rounded-lg mb-4" />
+    <p className="text-yellow-500 italic mb-4">
+      Note: Ensure camera permissions are enabled in your browser for scanning.
+    </p>
+    {scanResult && (
+      <div className="alert alert-success text-white">
+        <span className="font-bold">Scanned Result:</span> {scanResult}
+      </div>
+    )}
+    <div className="card-actions justify-center mt-4">
       {scanResult && (
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <p className="text-center">Scanned Result:</p>
-          <p className="font-bold text-center text-green-600">{scanResult}</p>
-          <div className="flex justify-center mt-4">
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-              onClick={() => navigator.clipboard.writeText(scanResult)}
-            >
-              Copy to Clipboard
-            </button>
-          </div>
-        </div>
+        <button
+          className="btn btn-primary text-white"
+          onClick={() => navigator.clipboard.writeText(scanResult)}
+        >
+          Copy to Clipboard
+        </button>
       )}
-      {!isScanning && (
-        <div className="flex justify-center mt-4">
-          <button
-            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
-            onClick={rescan}
-          >
-            Rescan
-          </button>
-        </div>
-      )}
+      <button className="btn btn-warning text-white" onClick={rescan}>
+        Rescan
+      </button>
     </div>
+  </div>
+</div>
+
   );
 };
 

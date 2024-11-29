@@ -16,7 +16,7 @@ const App = () => {
       <div className="absolute top-4 right-4">
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className={`px-2 py-1 ${
+          className={`btn ${
             darkMode ? "bg-white" : "bg-black"
           } rounded`}
         >

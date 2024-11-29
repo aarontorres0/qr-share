@@ -6,6 +6,6 @@ export default {
     extend: {},
   },
   plugins: [
-    'daisyui'
+    require("daisyui")
   ],
 }
