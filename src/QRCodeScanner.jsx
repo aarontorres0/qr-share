@@ -2,7 +2,7 @@ import QrScanner from "qr-scanner";
 import { useEffect, useRef, useState } from "react";
 
 const QRCodeScanner = () => {
-  const [scanResult, setScanResult] = useState('');
+  const [scanResult, setScanResult] = useState("");
   const [cameraEnabled, setCameraEnabled] = useState(false);
   const videoRef = useRef(null);
   const qrScannerRef = useRef(null);
@@ -41,7 +41,7 @@ const QRCodeScanner = () => {
 
   const rescan = async () => {
     stopScanning();
-    setScanResult('');
+    setScanResult("");
     await startScanning();
   };
 
@@ -58,17 +58,17 @@ const QRCodeScanner = () => {
   }, [cameraEnabled]);
 
   return (
-    <div className="card shadow-xl w-full max-w-md">
+    <div className="card bg-base-100 shadow-xl w-full max-w-md">
       <div className="card-body">
-        <h2 className="card-title text-yellow-600">QR Code Scanner</h2>
+        <h2 className="card-title text-primary">QR Code Scanner</h2>
         {cameraEnabled ? (
-          <video ref={videoRef} className="rounded-lg mb-4" />
+          <video ref={videoRef} className="rounded-box mb-4" />
         ) : (
-          <p className="text-gray-500 italic mb-4">
+          <p className="text-base-content italic mb-4">
             Camera is off. Click "Enable Camera" to start scanning.
           </p>
         )}
-        <p className="text-yellow-500 italic mb-4">
+        <p className="text-warning italic mb-4">
           Note: Ensure camera permissions are enabled in your browser for
           scanning.
         </p>
@@ -78,7 +78,7 @@ const QRCodeScanner = () => {
           </div>
         )}
         <div className="card-actions justify-center mt-4 space-x-4">
-        {!scanResult && (
+          {!scanResult && (
             <button
               className={`btn ${
                 cameraEnabled ? "btn-error" : "btn-primary"

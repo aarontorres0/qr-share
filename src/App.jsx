@@ -1,33 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QRCodeGenerator from "./QRCodeGenerator";
 import QRCodeScanner from "./QRCodeScanner";
-import SunIcon from "./assets/sun-icon.svg";
 import MoonIcon from "./assets/moon-icon.svg";
+import SunIcon from "./assets/sun-icon.svg";
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
-    <div
-      className={`flex flex-col items-center justify-center min-h-screen ${
-        darkMode ? "bg-gray-800" : "bg-gray-100"
-      } space-y-6 px-4 py-8`}
-    >
+    <div className="min-h-screen bg-base-100 flex flex-col items-center justify-center space-y-6 px-4 py-8">
       <div className="absolute top-4 right-4">
         <button
-          onClick={() => setDarkMode(!darkMode)}
-          className={`btn ${
-            darkMode ? "bg-white" : "bg-black"
-          } rounded`}
+          onClick={toggleTheme}
+          className={`btn btn-circle ${
+            theme === "light" ? "btn-neutral" : "btn-warning"
+          }`}
         >
           <img
-            src={darkMode ? SunIcon : MoonIcon}
-            alt={darkMode ? "Light Mode" : "Dark Mode"}
+            src={theme === "light" ? MoonIcon : SunIcon}
+            alt={theme === "light" ? "Dark Mode" : "Light Mode"}
             className="w-6 h-6"
           />
         </button>
       </div>
-      
       <QRCodeGenerator />
       <QRCodeScanner />
     </div>
