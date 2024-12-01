@@ -3,21 +3,27 @@ import { useEffect, useRef, useState } from "react";
 
 const QRCodeScanner = () => {
   const [scanResult, setScanResult] = useState('');
+  const [cameraEnabled, setCameraEnabled] = useState(false);
   const videoRef = useRef(null);
   const qrScannerRef = useRef(null);
 
-  const startScanning = () => {
+  const startScanning = async () => {
     if (videoRef.current) {
       const qrScanner = new QrScanner(
         videoRef.current,
         (result) => {
           setScanResult(result.data);
-          stopScanning();
+          stopScanning(); // Stop after a successful scan
         },
         { returnDetailedScanResult: true }
       );
-      qrScanner.start();
       qrScannerRef.current = qrScanner;
+
+      try {
+        await qrScanner.start(); // Start the camera
+      } catch (error) {
+        console.error("Error starting camera:", error);
+      }
     }
   };
 
@@ -29,25 +35,39 @@ const QRCodeScanner = () => {
     }
   };
 
-  const rescan = () => {
+  const toggleCamera = () => {
+    setCameraEnabled((prev) => !prev);
+  };
+
+  const rescan = async () => {
     stopScanning();
     setScanResult('');
-    startScanning();
+    await startScanning();
   };
 
   useEffect(() => {
-    startScanning();
+    if (cameraEnabled) {
+      startScanning();
+    } else {
+      stopScanning();
+    }
 
     return () => {
-      stopScanning();
+      stopScanning(); // Cleanup on unmount
     };
-  }, []);
+  }, [cameraEnabled]);
 
   return (
     <div className="card shadow-xl w-full max-w-md">
       <div className="card-body">
         <h2 className="card-title text-yellow-600">QR Code Scanner</h2>
-        <video ref={videoRef} className="rounded-lg mb-4" />
+        {cameraEnabled ? (
+          <video ref={videoRef} className="rounded-lg mb-4" />
+        ) : (
+          <p className="text-gray-500 italic mb-4">
+            Camera is off. Click "Enable Camera" to start scanning.
+          </p>
+        )}
         <p className="text-yellow-500 italic mb-4">
           Note: Ensure camera permissions are enabled in your browser for
           scanning.
@@ -57,22 +77,33 @@ const QRCodeScanner = () => {
             <span className="font-bold">Scanned Result:</span> {scanResult}
           </div>
         )}
-        <div className="card-actions justify-center mt-4">
-          {scanResult && (
+        <div className="card-actions justify-center mt-4 space-x-4">
+        {!scanResult && (
             <button
-              className="btn btn-primary text-white"
-              onClick={() => navigator.clipboard.writeText(scanResult)}
+              className={`btn ${
+                cameraEnabled ? "btn-error" : "btn-primary"
+              } text-white`}
+              onClick={toggleCamera}
             >
-              Copy to Clipboard
+              {cameraEnabled ? "Disable Camera" : "Enable Camera"}
             </button>
           )}
-          <button className="btn btn-warning text-white" onClick={rescan}>
-            Rescan
-          </button>
+          {scanResult && (
+            <>
+              <button
+                className="btn btn-secondary text-white"
+                onClick={() => navigator.clipboard.writeText(scanResult)}
+              >
+                Copy to Clipboard
+              </button>
+              <button className="btn btn-warning text-white" onClick={rescan}>
+                Rescan
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
-
   );
 };
 
